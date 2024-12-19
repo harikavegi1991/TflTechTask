@@ -11,11 +11,13 @@ import androidx.compose.ui.test.performTextInput
 import com.example.signinapp.dataobjects.TestDataObject
 import com.example.signinapp.helper.ReadFromFileAndDeserialize
 
-internal class LoginPageModule(composeRule: ComposeTestRule)
+internal class LoginPageModule(val composeRule: ComposeTestRule)
 {
     private val userIdField: SemanticsNodeInteraction = composeRule.onNodeWithTag("TechTaskUserId")
     private val passwordField: SemanticsNodeInteraction = composeRule.onNodeWithTag("TechTaskPassword")
     private val signInButton: SemanticsNodeInteraction = composeRule.onNodeWithText("Sign in")
+    private val loginErrorTitle: SemanticsNodeInteraction = composeRule.onNodeWithTag("TechTaskLoginError")
+    private val doneButtonOnDialog: SemanticsNodeInteraction = composeRule.onNodeWithTag("TechTaskConfirmButton")
 
     fun loginToTheApp(userId: String, password: String)
     {
@@ -37,5 +39,11 @@ internal class LoginPageModule(composeRule: ComposeTestRule)
                 testDataFileLocation,
                 TestDataObject::class.java
             )
+    }
+
+    fun verifyLoginErrorDialogDisplayed()
+    {
+        loginErrorTitle.assertIsDisplayed()
+        doneButtonOnDialog.performClick()
     }
 }
